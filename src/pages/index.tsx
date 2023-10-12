@@ -43,7 +43,7 @@ interface TodoListProps {
 }
 
 const IndexPage = () => {
-  const [todos, setTodos] = useState([
+  const [todos, setTodos] = useState<Todo[]>([
     { id: 1, content: "Todto#1" },
     { id: 2, content: "Todto#2" },
     { id: 3, content: "Todto#3" },
