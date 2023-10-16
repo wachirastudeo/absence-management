@@ -1,62 +1,26 @@
-import { type ChangeEventHandler, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-interface Todo {
-  id: number;
-  content: string;
+interface FooProps {
+  x: number;
 }
+//mounted ,updated,unmounting
 
-interface TodoFormProps {
-  addTodo: (todo: string) => void;
-}
-
-const TodoFrom = ({ addTodo }: TodoFormProps) => {
-  const [todo, setTodo] = useState<string>("");
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    setTodo(event.currentTarget.value);
-  };
-  const handleAddTodo = () => {
-    addTodo(todo);
-    setTodo("");
-  };
-  return (
-    <>
-      <input type="text" value={todo} onChange={handleChange}></input>
-      <button onClick={handleAddTodo}>Add Todo</button>
-    </>
-  );
+const Foo = ({ x }: FooProps) => {
+  useEffect(() => {
+    console.log(x);
+    return () => console.log("bye"); // unmounting
+  }, [x]); //prop,state
 };
-
-const TodoList = ({ todos }: TodoListProps) => {
-  return (
-    <>
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>{todo.content}</li>
-        ))}
-      </ul>
-    </>
-  );
-};
-
-interface TodoListProps {
-  todos: Todo[];
-}
 
 const IndexPage = () => {
-  const [todos, setTodos] = useState<Todo[]>([
-    { id: 1, content: "Todto#1" },
-    { id: 2, content: "Todto#2" },
-    { id: 3, content: "Todto#3" },
-  ]);
-
-  const addTodo = (todo: string) => {
-    setTodos([...todos, { id: todos.length + 1, content: todo }]);
-  };
-
+  const [isShow, setIsShow] = useState(false);
+  const [x, setX] = useState(1);
   return (
     <>
-      <TodoFrom addTodo={addTodo}></TodoFrom>
-      <TodoList todos={todos}></TodoList>
+      <button onClick={() => setIsShow(!isShow)}>Toggle</button>
+      <button onClick={() => setX(+new Date())}>Chang X</button>
+
+      {isShow && <Foo x={x}></Foo>}
     </>
   );
 };
