@@ -1,30 +1,12 @@
-import { type ChangeEventHandler, useState } from "react";
+import React, { type ChangeEventHandler, useState } from 'react';
 
 interface Todo {
   id: number;
   content: string;
 }
-
-interface TodoFormProps {
-  addTodo: (todo: string) => void;
+interface TodoListProps {
+  todos: Todo[];
 }
-
-const TodoFrom = ({ addTodo }: TodoFormProps) => {
-  const [todo, setTodo] = useState<string>("");
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    setTodo(event.currentTarget.value);
-  };
-  const handleAddTodo = () => {
-    addTodo(todo);
-    setTodo("");
-  };
-  return (
-    <>
-      <input type="text" value={todo} onChange={handleChange}></input>
-      <button onClick={handleAddTodo}>Add Todo</button>
-    </>
-  );
-};
 
 const TodoList = ({ todos }: TodoListProps) => {
   return (
@@ -37,28 +19,43 @@ const TodoList = ({ todos }: TodoListProps) => {
     </>
   );
 };
-
-interface TodoListProps {
-  todos: Todo[];
+interface FormTodoProps {
+  addtodo: (todo: string) => void;
 }
-
-const IndexPage = () => {
-  const [todos, setTodos] = useState<Todo[]>([
-    { id: 1, content: "Todto#1" },
-    { id: 2, content: "Todto#2" },
-    { id: 3, content: "Todto#3" },
-  ]);
-
-  const addTodo = (todo: string) => {
-    setTodos([...todos, { id: todos.length + 1, content: todo }]);
+const FormTodo = ({ addtodo }: FormTodoProps) => {
+  const [todo, setTodo] = useState('');
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    setTodo(event.target.value);
   };
-
+  const handleClick = () => {
+    addtodo(todo);
+    setTodo('');
+  };
   return (
     <>
-      <TodoFrom addTodo={addTodo}></TodoFrom>
-      <TodoList todos={todos}></TodoList>
+      <input type="text" value={todo} onChange={handleChange}></input>
+      <button onClick={handleClick}> Add todo</button>
     </>
   );
 };
 
-export default IndexPage;
+const Index2 = () => {
+  const [todos, setTodos] = useState([
+    { id: 1, content: '#1 todo' },
+    { id: 2, content: '#2 todo' },
+    { id: 3, content: '#3 todo' },
+    { id: 4, content: '#4 todo' },
+  ]);
+
+  const addtodo = (todo: string) => {
+    setTodos([...todos, { id: todos.length + 1, content: todo }]);
+  };
+  return (
+    <>
+      <FormTodo addtodo={addtodo} />
+      <TodoList todos={todos} />
+    </>
+  );
+};
+
+export default Index2;
