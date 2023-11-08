@@ -1,28 +1,21 @@
-import React, { useEffect, useState } from "react";
+import {api} from '~/utils/api'
 
-interface FooProps {
-  x: number;
-}
-//mounted ,updated,unmounting
+const IndexPage=()=>{
+ 
+ const {data:articles,isLoading} =api.article.list.useQuery();
+  
+ if(isLoading) return<div> loading... </div>
+ if(!articles) return<div> no Content</div>
 
-const Foo = ({ x }: FooProps) => {
-  useEffect(() => {
-    console.log(x);
-    return () => console.log("bye"); // unmounting
-  }, [x]); //prop,state
+ return ( 
+ <div>
+    <ul> 
+    {articles.map((article) => (
+          <li key={article.id}>{article.content}</li>
+        ))}
+     
+    </ul>
+
+ </div>);
 };
-
-const IndexPage = () => {
-  const [isShow, setIsShow] = useState(false);
-  const [x, setX] = useState(1);
-  return (
-    <>
-      <button onClick={() => setIsShow(!isShow)}>Toggle</button>
-      <button onClick={() => setX(+new Date())}>Chang X</button>
-
-      {isShow && <Foo x={x}></Foo>}
-    </>
-  );
-};
-
-export default IndexPage;
+ export default IndexPage;
